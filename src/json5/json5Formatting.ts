@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Formatting } from '@croct/json5-parser';
+import { Formatting, JsonParseError } from '@croct/json5-parser';
 import { formatJson5 } from './json5Validation';
 
 export class JsonFormattingProvider implements vscode.DocumentFormattingEditProvider {
@@ -13,7 +13,17 @@ export class JsonFormattingProvider implements vscode.DocumentFormattingEditProv
 			return [];
 		}
 
-		const formatted = formatJson5(source, toFormattingOptions(document, options));
+		let formatted: string;
+
+		try {
+			formatted = formatJson5(source, toFormattingOptions(document, options));
+		} catch (error) {
+			if (error instanceof JsonParseError) {
+				return [];
+			}
+
+			throw error;
+		}
 
 		if (formatted === source) {
 			return [];

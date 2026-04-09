@@ -7,15 +7,29 @@
     "vscode": "^1.115.0"
   },
   "categories": [
-    "Other"
+    "Programming Languages",
+    "Formatters"
   ],
-  "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [
+    "languages": [
       {
-        "command": "json5-support.helloWorld",
-        "title": "Hello World"
+        "id": "json5",
+        "aliases": [
+          "JSON5",
+          "json5"
+        ],
+        "extensions": [
+          ".json5"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "json5",
+        "scopeName": "source.json5",
+        "path": "./syntaxes/json5.tmLanguage.json"
       }
     ]
   },
