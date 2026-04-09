@@ -1,0 +1,51 @@
+{
+  // 基本信息
+  name: 'test-app',
+  version: 1.0.0,          // 错误：数字不能写成这样
+  enabled: tru,            // 错误：true 拼错
+  port: 08,                // 有些解析器会报错/歧义
+
+  database: {
+    host: 'localhost'
+    port: 3306,            // 错误：上一行后面缺少逗号
+    user: "root',
+    password: '123456,     // 错误：字符串引号没闭合
+    retry: ,
+  },
+
+  features: [
+    'login',
+    'upload,               // 错误：字符串没闭合
+    false,
+    ,
+    NaNN,                  // 错误：NaN 拼错
+    { key: 'value',, },    // 错误：双逗号
+  ],
+
+  paths: {
+    home: 'C:\Users\test', // 反斜杠转义混乱
+    temp: 'D:\temp\new\',
+    log: /var/log/app,     // 错误：未加引号
+  },
+
+  users: [
+    {
+      id: 1,
+      name: 'Alice',
+    }
+    {
+      id: 2,
+      name: 'Bob',
+      role: admin,         // 错误：字符串未加引号
+    },
+  ],
+
+  misc: {
+    hexValue: 0xZZ,        // 错误：非法十六进制
+    infinity: Infinityy,   // 错误：拼错
+    emptyKey:: 'oops',     // 错误：双冒号
+    'broken-array': [1 2 3], // 错误：缺逗号
+  ,
+
+  trailing: 'end',
+}}
