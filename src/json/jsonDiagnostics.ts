@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
-import { JsonParseError, JsonParser, SourceLocation } from '@croct/json5-parser';
+import { SourceLocation } from '@croct/json5-parser';
+import { Json5ValidationError, collectJson5ValidationErrors } from './jsonValidation';
 
 export class JsonDiagnosticsProvider implements vscode.Disposable {
 
@@ -36,20 +37,11 @@ export class JsonDiagnosticsProvider implements vscode.Disposable {
 			return;
 		}
 
-		try {
-			JsonParser.parse(text);
-			this.collection.set(document.uri, []);
-		} catch (error) {
-			if (error instanceof JsonParseError) {
-				this.collection.set(document.uri, [this.createDiagnostic(document, error)]);
-				return;
-			}
-
-			throw error;
-		}
+		const errors = collectJson5ValidationErrors(text);
+		this.collection.set(document.uri, errors.map(error => this.createDiagnostic(document, error)));
 	}
 
-	private createDiagnostic(document: vscode.TextDocument, error: JsonParseError): vscode.Diagnostic {
+	private createDiagnostic(document: vscode.TextDocument, error: Json5ValidationError): vscode.Diagnostic {
 		const range = this.toRange(document, error.location);
 		const diagnostic = new vscode.Diagnostic(range, error.message, vscode.DiagnosticSeverity.Error);
 		diagnostic.source = 'json5';

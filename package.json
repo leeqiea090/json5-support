@@ -20,6 +20,7 @@
 		"watch": "tsc -watch -p ./",
 		"build": "tsc -p ./",
 		"test:json5-errors": "node ./scripts/json5-diagnostics-smoke-test.js",
+		"test:json5-features": "npm run build && node ./scripts/json5-features-smoke-test.js",
 		"package": "vsce package",
 		"lint": "eslint \"src/**/*.ts\""
 	},
@@ -94,65 +95,6 @@
 		"onLanguage:json5"
 	],
 	"contributes": {
-		"viewsContainers": {
-			"activitybar": [
-				{
-					"id": "json-views",
-					"title": "json5",
-					"icon": "./resources/json-500.png"
-				}
-			]
-		},
-		"views": {
-			"json-views": [
-				{
-					"id": "jsonTree",
-					"name": "Please open the json5 file.(ZainChen)"
-				}
-			]
-		},
-		"menus": {
-			"view/title": [
-				{
-					"command": "jsonTree.refresh",
-					"when": "view == jsonTree",
-					"group": "navigation"
-				}
-			],
-			"view/item/context": [
-				{
-					"command": "jsonTree.renameNode",
-					"when": "view == jsonTree && viewItem == renameable"
-				},
-				{
-					"command": "jsonTree.refreshNode",
-					"when": "view == jsonTree",
-					"group": "inline"
-				}
-			]
-		},
-		"commands": [
-			{
-				"command": "jsonTree.refresh",
-				"title": "Refresh",
-				"icon": {
-					"light": "./resources/light/refresh.svg",
-					"dark": "./resources/dark/refresh.svg"
-				}
-			},
-			{
-				"command": "jsonTree.refreshNode",
-				"title": "Refresh",
-				"icon": {
-					"light": "./resources/light/refresh.svg",
-					"dark": "./resources/dark/refresh.svg"
-				}
-			},
-			{
-				"command": "jsonTree.renameNode",
-				"title": "Rename"
-			}
-		],
 		"languages": [
 			{
 				"id": "json5",
@@ -182,11 +124,6 @@
 						"type": "string",
 						"default": "Welcome to vscode-json5.",
 						"description": "JSON5 for Visual Studio Code"
-					},
-					"JSON-zain.json5.autorefresh": {
-						"type": "boolean",
-						"default": false,
-						"description": "Whether to update the menu in real time based on the contents of the json5 file!"
 					}
 				}
 			}

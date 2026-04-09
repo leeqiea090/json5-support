@@ -2,18 +2,14 @@
 
 import * as vscode from 'vscode';
 import { JsonDiagnosticsProvider } from './json/jsonDiagnostics';
-import { JsonTreeProvider } from './json/jsonTree';
+import { JsonFormattingProvider } from './json/jsonFormatting';
 
 export function activate(context: vscode.ExtensionContext) {
-	const jsonTreeProvider = new JsonTreeProvider(context);
 	const jsonDiagnosticsProvider = new JsonDiagnosticsProvider();
+	const jsonFormattingProvider = new JsonFormattingProvider();
 
 	context.subscriptions.push(
 		jsonDiagnosticsProvider,
-		vscode.window.createTreeView('jsonTree', { treeDataProvider: jsonTreeProvider, showCollapseAll: true }),
-		vscode.commands.registerCommand('jsonTree.refresh', () => jsonTreeProvider.refresh()),
-		vscode.commands.registerCommand('jsonTree.refreshNode', offset => jsonTreeProvider.refresh(offset)),
-		vscode.commands.registerCommand('jsonTree.renameNode', offset => jsonTreeProvider.rename(offset)),
-		vscode.commands.registerCommand('extension.openJsonSelection', range => jsonTreeProvider.select(range))
+		vscode.languages.registerDocumentFormattingEditProvider({ language: 'json5' }, jsonFormattingProvider)
 	);
 }
