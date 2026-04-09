@@ -1,45 +1,69 @@
-name: Deploy to GitHub - Prod Stage
+name: Publish VS Code Extension
 
 permissions:
   contents: write
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - production
+    tags:
+      - "v*.*.*"
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [macos-latest]
+  publish:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout git repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Build
-        run: npm run build
+      - name: Verify tag matches package version
+        if: github.ref_type == 'tag'
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          PACKAGE_VERSION="$(node -p "require('./package.json').version")"
 
-      - name: Package
-        run: npm run package
+          if [[ "$TAG_VERSION" != "$PACKAGE_VERSION" ]]; then
+            echo "::error::Tag version ${TAG_VERSION} does not match package.json version ${PACKAGE_VERSION}"
+            exit 1
+          fi
 
-      - name: Get version from package.json
-        id: package
-        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
-  
-      - name: Release
+      - name: Package extension
+        run: npm run package:vsix
+
+      - name: Read package metadata
+        id: metadata
+        run: |
+          PACKAGE_NAME="$(node -p "require('./package.json').name")"
+          PACKAGE_VERSION="$(node -p "require('./package.json').version")"
+
+          echo "name=${PACKAGE_NAME}" >> "$GITHUB_OUTPUT"
+          echo "version=${PACKAGE_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "vsix=${PACKAGE_NAME}-${PACKAGE_VERSION}.vsix" >> "$GITHUB_OUTPUT"
+
+      - name: Publish to Visual Studio Marketplace
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: |
+          if [[ -z "$VSCE_PAT" ]]; then
+            echo "::error::Missing VSCE_PAT secret."
+            exit 1
+          fi
+
+          npx @vscode/vsce publish --skip-license --packagePath "${{ steps.metadata.outputs.vsix }}" -p "$VSCE_PAT"
+
+      - name: Create GitHub release
+        if: github.ref_type == 'tag'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: vscode-json-v${{ steps.package.outputs.version }}
-          files: json-${{ steps.package.outputs.version }}.vsix
+          generate_release_notes: true
+          files: ${{ steps.metadata.outputs.vsix }}

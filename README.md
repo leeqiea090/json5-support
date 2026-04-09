@@ -1,71 +1,69 @@
-# json5-support README
+# JSON5 Support
 
-This is the README for your extension "json5-support". After writing up a brief description, we recommend including the following sections.
+JSON5 Support adds language registration, syntax highlighting, syntax diagnostics, and document formatting for `.json5` files in Visual Studio Code.
+
+The extension is built on top of `@croct/json5-parser`, which is used both to validate documents and to format valid JSON5 content.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Registers `.json5` files as the `json5` language.
+- Highlights JSON5 syntax with a dedicated grammar.
+- Reports syntax errors directly in the editor and the Problems panel.
+- Formats valid JSON5 documents with `Format Document`.
+- Respects editor indentation settings and the current file line endings when formatting.
 
-For example if there is an image subfolder under your extension project workspace:
+## Usage
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+1. Open or create a `.json5` file.
+2. Edit as usual and watch diagnostics appear as you type.
+3. Run `Format Document` to normalize spacing and indentation.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+- VS Code 1.115.0 or newer.
+- No additional configuration is required.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+This extension does not currently contribute custom settings.
 
-For example:
+## Known Limitations
 
-This extension contributes the following settings:
+- Formatting is only applied when the current document is valid JSON5.
+- The extension currently focuses on syntax support only. It does not provide JSON schema validation, IntelliSense, or code actions.
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+## Development
 
-## Known Issues
+```bash
+npm install
+npm run watch
+```
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+Useful scripts:
+
+- `npm run package`: run type-checking, linting, and produce the production bundle in `dist`.
+- `npm run package:vsix`: build and package the extension into a `.vsix` file.
+- `npm run publish:marketplace`: publish the current version with `vsce`.
+
+The packaging helper automatically falls back to Node 20 when the local runtime is newer than the `vsce` dependency chain currently supports.
+
+If you prefer to log in once before publishing manually, run `npx @vscode/vsce login <publisher-id>` and then use `npm run publish:marketplace`.
+
+If you want to publish without storing credentials locally, run `npm run publish:marketplace -- -p <your-token>`.
+
+## Automated Publishing
+
+This repository includes a GitHub Actions workflow that publishes the extension to the Visual Studio Marketplace.
+
+Before using it:
+
+1. Create a Marketplace publisher and confirm that the `publisher` field in `package.json` matches it.
+2. Add a repository secret named `VSCE_PAT` with a Visual Studio Marketplace personal access token that has `Marketplace (Manage)` scope.
+3. Bump the version in `package.json`.
+4. Push a tag in the form `vX.Y.Z` to trigger the release workflow.
+
+You can also trigger the workflow manually from GitHub Actions.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+See `CHANGELOG.md` for published changes.

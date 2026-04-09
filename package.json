@@ -1,15 +1,32 @@
 {
   "name": "json5-support",
-  "displayName": "json5-support",
-  "description": "Supports JSON5 highlighting and formatting in VS Code",
+  "displayName": "JSON5 Support",
+  "description": "Syntax highlighting, diagnostics, and formatting support for JSON5 files in VS Code",
   "version": "0.0.1",
+  "publisher": "leeqiea090",
   "engines": {
     "vscode": "^1.115.0"
   },
+  "icon": "resources/json-128.png",
   "categories": [
     "Programming Languages",
     "Formatters"
   ],
+  "keywords": [
+    "json5",
+    "json",
+    "formatter",
+    "diagnostics",
+    "syntax"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leeqiea090/json5-support.git"
+  },
+  "homepage": "https://github.com/leeqiea090/json5-support#readme",
+  "bugs": {
+    "url": "https://github.com/leeqiea090/json5-support/issues"
+  },
   "main": "./dist/extension.js",
   "contributes": {
     "languages": [
@@ -40,6 +57,8 @@
     "watch:esbuild": "node esbuild.js --watch",
     "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
     "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "package:vsix": "node ./scripts/vsce.js package --skip-license",
+    "publish:marketplace": "node ./scripts/vsce.js publish --skip-license",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
@@ -53,6 +72,7 @@
     "@types/vscode": "^1.115.0",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.7.1",
     "esbuild": "^0.27.3",
     "eslint": "^9.39.3",
     "npm-run-all": "^4.1.5",
