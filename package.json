@@ -1,0 +1,195 @@
+{
+	"name": "json",
+	"displayName": "json5",
+	"description": "JSON5 for Visual Studio Code",
+	"version": "2.1.0",
+	"publisher": "ZainChen",
+	"author": "ZainChen <zainchenczy@gmail.com>",
+	"homepage": "https://github.com/ZainChen/vscode-json#readme",
+	"bugs": {
+		"url": "https://github.com/ZainChen/vscode-json/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ZainChen/vscode-json"
+	},
+	"license": "MIT",
+	"icon": "resources/json-128.png",
+	"main": "./out/extension.js",
+	"scripts": {
+		"watch": "tsc -watch -p ./",
+		"build": "tsc -p ./",
+		"test:json5-errors": "node ./scripts/json5-diagnostics-smoke-test.js",
+		"package": "vsce package",
+		"lint": "eslint \"src/**/*.ts\""
+	},
+	"dependencies": {
+		"@croct/json5-parser": "^0.2.2"
+	},
+	"devDependencies": {
+		"@types/node": "^16.18.34",
+		"@types/vscode": "^1.73.0",
+		"@typescript-eslint/eslint-plugin": "^6.7.0",
+		"@typescript-eslint/parser": "^6.7.0",
+		"@vscode/vsce": "^2.26.0",
+		"eslint": "^8.26.0",
+		"typescript": "^5.3.2"
+	},
+	"categories": [
+		"Extension Packs",
+		"Other"
+	],
+	"keywords": [
+		"zain",
+		"ZainChen",
+		"银",
+		"志银",
+		"陈志银",
+		"陈志振",
+		"json",
+		"json5",
+		"html",
+		"css",
+		"javascript",
+		"nodejs",
+		"github",
+		"gitlab",
+		"git",
+		"c",
+		"C++",
+		"web",
+		"js",
+		"npm",
+		"python",
+		"java",
+		"Ruby",
+		"webpack",
+		"php",
+		"mysql",
+		"sql",
+		"apache",
+		"nginx",
+		"iis",
+		"wordpress",
+		"hexo",
+		"tencent",
+		"linux",
+		"window",
+		"mac",
+		"vs",
+		"google",
+		"markdown",
+		"xml",
+		"run",
+		"commands",
+		"view",
+		"diff",
+		"tree",
+		"compare"
+	],
+	"engines": {
+		"vscode": "^1.74.0"
+	},
+	"activationEvents": [
+		"onLanguage:json5"
+	],
+	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "json-views",
+					"title": "json5",
+					"icon": "./resources/json-500.png"
+				}
+			]
+		},
+		"views": {
+			"json-views": [
+				{
+					"id": "jsonTree",
+					"name": "Please open the json5 file.(ZainChen)"
+				}
+			]
+		},
+		"menus": {
+			"view/title": [
+				{
+					"command": "jsonTree.refresh",
+					"when": "view == jsonTree",
+					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "jsonTree.renameNode",
+					"when": "view == jsonTree && viewItem == renameable"
+				},
+				{
+					"command": "jsonTree.refreshNode",
+					"when": "view == jsonTree",
+					"group": "inline"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "jsonTree.refresh",
+				"title": "Refresh",
+				"icon": {
+					"light": "./resources/light/refresh.svg",
+					"dark": "./resources/dark/refresh.svg"
+				}
+			},
+			{
+				"command": "jsonTree.refreshNode",
+				"title": "Refresh",
+				"icon": {
+					"light": "./resources/light/refresh.svg",
+					"dark": "./resources/dark/refresh.svg"
+				}
+			},
+			{
+				"command": "jsonTree.renameNode",
+				"title": "Rename"
+			}
+		],
+		"languages": [
+			{
+				"id": "json5",
+				"extensions": [
+					".json5"
+				],
+				"aliases": [
+					"JSON5",
+					"Json5"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "json5",
+				"scopeName": "source.json5",
+				"path": "./syntaxes/json5.tmLanguage.json"
+			}
+		],
+		"configuration": [
+			{
+				"type": "object",
+				"title": "JSON5-zain",
+				"properties": {
+					"JSON-zain.author.ZainChen": {
+						"type": "string",
+						"default": "Welcome to vscode-json5.",
+						"description": "JSON5 for Visual Studio Code"
+					},
+					"JSON-zain.json5.autorefresh": {
+						"type": "boolean",
+						"default": false,
+						"description": "Whether to update the menu in real time based on the contents of the json5 file!"
+					}
+				}
+			}
+		]
+	}
+}

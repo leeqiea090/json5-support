@@ -1,0 +1,165 @@
+{
+	"name": "JSON5",
+	"scopeName": "source.json5",
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#object-key"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#constants"
+		},
+		{
+			"include": "#numbers"
+		},
+		{
+			"include": "#punctuation"
+		}
+	],
+	"repository": {
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.line.double-slash.json5",
+					"begin": "//",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.comment.json5"
+						}
+					},
+					"end": "$\\n?"
+				},
+				{
+					"name": "comment.block.json5",
+					"begin": "/\\*",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.comment.begin.json5"
+						}
+					},
+					"end": "\\*/",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.comment.end.json5"
+						}
+					}
+				}
+			]
+		},
+		"object-key": {
+			"patterns": [
+				{
+					"name": "support.type.property-name.json5",
+					"match": "(?x)(?:\"(?:\\\\.|[^\"\\\\])*\"|'(?:\\\\.|[^'\\\\])*'|[$_\\p{L}\\p{Nl}][$\\w\\p{L}\\p{Nl}\\p{Mn}\\p{Mc}\\p{Nd}\\p{Pc}\\u200C\\u200D]*)\\s*(?=:)"
+				}
+			]
+		},
+		"strings": {
+			"patterns": [
+				{
+					"name": "string.quoted.double.json5",
+					"begin": "\"",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.begin.json5"
+						}
+					},
+					"end": "\"",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.end.json5"
+						}
+					},
+					"patterns": [
+						{
+							"name": "constant.character.escape.json5",
+							"match": "\\\\(?:['\\\"bfnrtv0]|x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|\\r?\\n|.)"
+						}
+					]
+				},
+				{
+					"name": "string.quoted.single.json5",
+					"begin": "'",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.begin.json5"
+						}
+					},
+					"end": "'",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.end.json5"
+						}
+					},
+					"patterns": [
+						{
+							"name": "constant.character.escape.json5",
+							"match": "\\\\(?:['\\\"bfnrtv0]|x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|\\r?\\n|.)"
+						}
+					]
+				}
+			]
+		},
+		"constants": {
+			"patterns": [
+				{
+					"name": "constant.language.boolean.json5",
+					"match": "\\b(?:true|false)\\b"
+				},
+				{
+					"name": "constant.language.null.json5",
+					"match": "\\bnull\\b"
+				},
+				{
+					"name": "constant.language.nan.json5",
+					"match": "\\bNaN\\b"
+				},
+				{
+					"name": "constant.language.infinity.json5",
+					"match": "\\bInfinity\\b"
+				}
+			]
+		},
+		"numbers": {
+			"patterns": [
+				{
+					"name": "constant.numeric.json5",
+					"match": "(?x)(?:[-+]?0[xX][0-9A-Fa-f]+|[-+]?(?:(?:\\d+\\.\\d*|\\.\\d+|\\d+)(?:[eE][+-]?\\d+)?))\\b"
+				}
+			]
+		},
+		"punctuation": {
+			"patterns": [
+				{
+					"name": "punctuation.separator.key-value.json5",
+					"match": ":"
+				},
+				{
+					"name": "punctuation.separator.comma.json5",
+					"match": ","
+				},
+				{
+					"name": "punctuation.definition.dictionary.begin.json5",
+					"match": "\\{"
+				},
+				{
+					"name": "punctuation.definition.dictionary.end.json5",
+					"match": "\\}"
+				},
+				{
+					"name": "punctuation.definition.array.begin.json5",
+					"match": "\\["
+				},
+				{
+					"name": "punctuation.definition.array.end.json5",
+					"match": "\\]"
+				}
+			]
+		}
+	}
+}
